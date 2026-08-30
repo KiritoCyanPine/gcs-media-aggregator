@@ -1,0 +1,12 @@
+[
+  {
+    "origin": [
+      "https://kiritocyanpine.github.io",
+      "http://localhost:8000",
+      "http://127.0.0.1:8000"
+    ],
+    "method": ["GET", "HEAD"],
+    "responseHeader": ["Authorization", "Content-Type", "Range"],
+    "maxAgeSeconds": 3600
+  }
+]

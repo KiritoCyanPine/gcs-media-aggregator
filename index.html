@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>GCS Photos</title>
+  <meta name="description" content="View a Google Cloud Storage bucket's images & videos like Google Photos." />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <header id="topbar" hidden>
+    <div class="brand">📷 GCS&nbsp;Photos</div>
+    <div class="topbar__info">
+      <span id="bucket-name"></span>
+      <span id="count" class="muted"></span>
+    </div>
+    <button id="signout" class="btn btn--ghost" type="button">Sign out</button>
+  </header>
+
+  <main>
+    <!-- ── Auth / start page ─────────────────────────────────────────── -->
+    <section id="auth-view" class="auth">
+      <form id="auth-form" class="auth__card" autocomplete="off">
+        <h1 class="auth__title">📷 GCS&nbsp;Photos</h1>
+        <p class="auth__sub">Browse a Google Cloud Storage bucket's images &amp; videos like Google Photos.</p>
+
+        <div class="warn">
+          <strong>Heads up:</strong> your service-account key stays in this browser only. Use a
+          <strong>read-only</strong> service account (<code>roles/storage.objectViewer</code>) and a bucket you
+          control. Never paste a key you can't afford to expose.
+        </div>
+
+        <label class="field">
+          <span class="field__label">Service account JSON</span>
+          <textarea id="sa-json" class="field__input field__input--code" rows="8"
+            placeholder='{ "type": "service_account", "project_id": "…", "private_key": "-----BEGIN PRIVATE KEY-----\n…", "client_email": "…@….iam.gserviceaccount.com", … }'
+            spellcheck="false" required></textarea>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Bucket name</span>
+          <input id="bucket" class="field__input" type="text" placeholder="my-photos-bucket"
+            spellcheck="false" autocapitalize="off" required />
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="remember" />
+          <span>Keep me signed in for this browser session (uses <code>sessionStorage</code>, cleared when the tab closes)</span>
+        </label>
+
+        <button id="connect" class="btn btn--primary" type="submit">Connect</button>
+
+        <div id="auth-status" class="auth__status" hidden></div>
+        <div id="auth-error" class="error" hidden></div>
+      </form>
+    </section>
+
+    <!-- ── Gallery ───────────────────────────────────────────────────── -->
+    <section id="gallery-view" hidden>
+      <div id="indexing" class="indexing" hidden>
+        <div class="spinner"></div>
+        <span id="indexing-text">Indexing…</span>
+      </div>
+      <div id="gallery" class="gallery" aria-live="polite"></div>
+      <div id="sentinel" aria-hidden="true"></div>
+      <div id="empty" class="empty" hidden>No images or videos found in this bucket.</div>
+    </section>
+  </main>
+
+  <!-- ── Fullscreen viewer ─────────────────────────────────────────────── -->
+  <div id="viewer" class="viewer" hidden aria-modal="true" role="dialog">
+    <button class="viewer__btn viewer__close" data-action="close" type="button" aria-label="Close">✕</button>
+    <button class="viewer__btn viewer__nav viewer__prev" data-action="prev" type="button" aria-label="Previous">‹</button>
+    <div class="viewer__stage" id="viewer-stage"></div>
+    <button class="viewer__btn viewer__nav viewer__next" data-action="next" type="button" aria-label="Next">›</button>
+    <div class="viewer__caption" id="viewer-caption"></div>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
